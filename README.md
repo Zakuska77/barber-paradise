@@ -4,11 +4,12 @@
 
 ## Getting started
 1. Install Docker
-2. Pull MSSQL latest images
-`    docker pull mcr.microsoft.com/mssql/server:2022-latest`
-3. Run the docker Image
-`    docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Projet2DBbackend" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.  microsoft.com/mssql/server:2022-latest`
+2. In your cmd running as administrator run the following commands to pull and run the mssql container
+`docker pull mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Projet2DBbackend" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.  microsoft.com/mssql/server:2022-latest`
+3. Connect to the docker database in Azure data studio
 4. Insert Run the creation sql script
+Pour l'utiliser
 
 ## Back-end
 
