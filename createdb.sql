@@ -10,6 +10,9 @@ CREATE TABLE Clients (
     Username NVARCHAR(50) NOT NULL,
     Password NVARCHAR(50) NOT NULL, -- Stocker les mots de passe de manière sécurisée est crucial. Vous pouvez envisager des méthodes de hachage et de salage.
     Email NVARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(20),
+    ListFav TEXT, --a revenir
+    appointmentHistory TEXT, --a revenir
     -- Ajoutez d'autres informations sur le client selon les besoins
 );
 
@@ -17,10 +20,27 @@ CREATE TABLE Clients (
 CREATE TABLE Coiffeurs (
     CoiffeurID INT PRIMARY KEY IDENTITY(1,1),
     Username NVARCHAR(50) NOT NULL,
-    Password NVARCHAR(50) NOT NULL, -- Encore une fois, assurez-vous de stocker les mots de passe de manière sécurisée.
+    Password NVARCHAR(50) NOT NULL,
     Email NVARCHAR(100) NOT NULL,
-    -- Ajoutez d'autres informations sur le coiffeur selon les besoins
+    Location varchar(255),
+    PhoneNumber VARCHAR(20),
+    availability datetime,
+    ListServices TEXT, --a revenir
+    nextAppointment datetime,
+    appointmentHistory TEXT,
+    profilePic TEXT,
+    listPicture TEXT, --a revenir
+    reviews TEXT, --a revenir
 );
+
+-- Table pour les profils des clients
+CREATE TABLE Services (
+    ServicesID INT PRIMARY KEY IDENTITY(1,1),
+    ServiceName varchar(20),
+    description text,
+    price int
+);
+
 
 -- Table pour les profils des clients
 CREATE TABLE ClientProfiles (
@@ -68,4 +88,8 @@ VALUES
 ('client2', 'password2', 'client2@example.com'),
 ('client3', 'password3', 'client3@example.com');
 
+
+
 select * from Clients
+
+select * from Coiffeurs
