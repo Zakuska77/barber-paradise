@@ -4,82 +4,83 @@ use Mandat2
 GO
 
 
+
 -- Table pour les clients
 CREATE TABLE Clients (
     ClientID INT PRIMARY KEY IDENTITY(1,1),
-    Username NVARCHAR(50) NOT NULL,
-    Password NVARCHAR(50) NOT NULL, -- Stocker les mots de passe de manière sécurisée est crucial. Vous pouvez envisager des méthodes de hachage et de salage.
-    Email NVARCHAR(100) NOT NULL,
+    Username varchar(50) NOT NULL,
+    Password varchar(50) NOT NULL,
+    Email varchar(100) NOT NULL,
     PhoneNumber VARCHAR(20),
-    ListFav TEXT, --a revenir
-    appointmentHistory TEXT, --a revenir
-    -- Ajoutez d'autres informations sur le client selon les besoins
 );
 
 -- Table pour les coiffeurs
 CREATE TABLE Coiffeurs (
     CoiffeurID INT PRIMARY KEY IDENTITY(1,1),
-    Username NVARCHAR(50) NOT NULL,
-    Password NVARCHAR(50) NOT NULL,
-    Email NVARCHAR(100) NOT NULL,
+    Username varchar(50) NOT NULL,
+    Password varchar(50) NOT NULL,
+    Email varchar(100) NOT NULL,
     Location varchar(255),
     PhoneNumber VARCHAR(20),
-    availability datetime,
-    ListServices TEXT, --a revenir
-    nextAppointment datetime,
-    appointmentHistory TEXT,
-    profilePic TEXT,
-    listPicture TEXT, --a revenir
-    reviews TEXT, --a revenir
-);
-
--- Table pour les profils des clients
-CREATE TABLE Services (
-    ServicesID INT PRIMARY KEY IDENTITY(1,1),
-    ServiceName varchar(20),
-    description text,
-    price int
+    profilePic varchar,
+    Availability varchar,
+    ShopName varchar(50),
+    ImageShop varchar
 );
 
 
--- Table pour les profils des clients
-CREATE TABLE ClientProfiles (
-    ProfileID INT PRIMARY KEY IDENTITY(1,1),
-    ClientID INT NOT NULL,
-    -- Ajoutez d'autres informations de profil client selon les besoins, telles que l'historique des rendez-vous, la liste des favoris, etc.
-    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID)
-);
-
--- Table pour les profils des coiffeurs
-CREATE TABLE CoiffeurProfiles (
-    ProfileID INT PRIMARY KEY IDENTITY(1,1),
-    CoiffeurID INT NOT NULL,
-    -- Ajoutez d'autres informations de profil coiffeur selon les besoins, telles que les disponibilités, les services proposés, etc.
-    FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
-);
-
--- Table pour les rendez-vous
-CREATE TABLE Appointments (
-    AppointmentID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE ListFav (
     ClientID INT NOT NULL,
     CoiffeurID INT NOT NULL,
-    AppointmentDateTime DATETIME NOT NULL,
-    -- Ajoutez d'autres informations sur le rendez-vous selon les besoins
     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
 );
 
+
+create table Appointment(
+    AppointmentID INT PRIMARY KEY IDENTITY(1,1),
+    ClientID INT,
+    CoiffeurID INT,
+    AppointmentDateTime DATETIME,
+    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
+    FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID),
+    IsAvailable BIT
+);
+
+-- Table pour les profils des clients
+CREATE TABLE CoiffeurServices (
+    ServiceID INT PRIMARY KEY IDENTITY(1,1),
+    CoiffeurID INT NOT NULL,
+    ServiceName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX),
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
+);
+
+
+--Table pour la liste des images des coiffeurs
+CREATE TABLE CoiffeurPictures (
+    PictureID INT PRIMARY KEY IDENTITY(1,1),
+    CoiffeurID INT NOT NULL,
+    Picture varchar(MAX) NOT NULL,
+    CONSTRAINT FK_CoiffeurPictures_Coiffeurs FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
+);
+
+
+
+
 -- Table pour les avis des clients sur les coiffeurs
 CREATE TABLE CoiffeurReviews (
     ReviewID INT PRIMARY KEY IDENTITY(1,1),
-    CoiffeurID INT NOT NULL,
     ClientID INT NOT NULL,
-    Rating INT NOT NULL, -- Peut être une échelle de notation ou un score
-    ReviewText NVARCHAR(MAX), -- Texte facultatif pour un commentaire
-    -- Ajoutez d'autres informations sur l'avis selon les besoins
-    FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID),
-    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID)
+    CoiffeurID INT NOT NULL,
+    Rating INT,
+    ReviewText NVARCHAR(MAX),
+    CONSTRAINT FK_Reviews_Clients FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
+    CONSTRAINT FK_Reviews_Coiffeurs FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
 );
+
+
 
 
 INSERT INTO Clients (Username, Password, Email)
@@ -89,7 +90,11 @@ VALUES
 ('client3', 'password3', 'client3@example.com');
 
 
-
 select * from Clients
 
 select * from Coiffeurs
+
+
+select * from Appointment
+
+
