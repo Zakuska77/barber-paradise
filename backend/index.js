@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 app.get('/Clients', async (req, res) => {
     try {
         const clients = await db('Clients').select('*');
-        return res.json(clients);
+        res.json(clients);
     } catch (err) {
         console.error('Error retrieving clients:', err);
         return res.status(500).json({ error: 'Internal server error' });
