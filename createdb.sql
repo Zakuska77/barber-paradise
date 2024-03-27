@@ -22,10 +22,10 @@ CREATE TABLE Coiffeurs (
     Email varchar(100) NOT NULL,
     Location varchar(255),
     PhoneNumber VARCHAR(20),
-    profilePic varchar,
+    profilePic VARCHAR(MAX),
     Availability varchar,
     ShopName varchar(50),
-    ImageShop varchar
+    ImageShop VARCHAR(MAX)
 );
 
 
@@ -88,6 +88,12 @@ VALUES
 ('client1', 'password1', 'client1@example.com'),
 ('client2', 'password2', 'client2@example.com'),
 ('client3', 'password3', 'client3@example.com');
+
+INSERT INTO Coiffeurs (Username, Password, Email, profilePic)
+VALUES 
+('coiffeur1', 'password1', 'coiffeur1@example.com', 'https://www.shutterstock.com/image-photo/barber-barbershop-hairdresser-beauty-salon-260nw-752120878.jpg'),
+('coiffeur2', 'password2', 'coiffeur2@example.com', 'https://as2.ftcdn.net/v2/jpg/02/52/22/81/1000_F_252228190_0UhanUm8GKG6ySZPmUawxa16WBcm11sr.jpg'),
+('coiffeur3', 'password3', 'coiffeur3@example.com', 'https://www.shutterstock.com/image-photo/smiling-woman-curly-red-hair-600nw-2403270217.jpg');
 
 
 select * from Clients
