@@ -13,29 +13,66 @@ const secretKey = 'your-secret-key';
 // Login route
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body)
     try {
-        // Fetch user data from the database based on email
-        const userData = await db('Clients').where('Email', email).first();
-        if (!userData) {
+        // Fetch user data from the clients table based on email
+        const clientData = await db('Clients').where('Email', email).first();
+        // Fetch user data from the coiffeurs table based on email
+        const coiffeurData = await db('Coiffeurs').where('Email', email).first();
+
+        if (!clientData && !coiffeurData) {
             return res.status(401).json({ message: 'Invalid email' });
         }
 
-        // Compare the password provided with the hashed password stored in the database
+        let userData, userId;
+        if (clientData) {
+            userData = clientData;
+            userId = userData.ClientID;
+        } else {
+            userData = coiffeurData;
+            userId = userData.CoiffeurID;
+        }
+
+        // Compare the provided password with the hashed password stored in the database
         const passwordMatch = password == userData.Password;
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        // If credentials are valid, generate a JWT token and send the user's name along with it
-        const token = jwt.sign({ email: userData.Email, userId: userData.ClientID, name: userData.Username }, secretKey);
-        console.log('Response:', { token, name: userData.Username, clientId: userData.ClientID }); // Log the response including ClientID
-        return res.json({ token, name: userData.Username, clientId: userData.ClientID });
-        
+        // Determine user type
+        const userType = clientData ? 'client' : 'coiffeur';
+
+        // If credentials are valid, generate a JWT token
+        const token = jwt.sign({ email: userData.Email, userId }, secretKey);
+        return res.json({ token, userType, userId });
     } catch (err) {
         console.error('Login error:', err);
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+// Add a route to fetch coiffeur details by ID
+app.get('/CoiffeurDetails/:id', async (req, res) => {
+    const coiffeurId = req.params.id;
+    try {
+        // Fetch coiffeur details from the database based on the provided ID
+        const coiffeurData = await db('Coiffeurs').where('CoiffeurID', coiffeurId).first();
+        
+        // Check if coiffeur data exists
+        if (!coiffeurData) {
+            return res.status(404).json({ message: 'Coiffeur not found' });
+        }
+        
+        // If coiffeur data exists, return it as JSON response
+        return res.json(coiffeurData);
+    } catch (err) {
+        // Handle any errors that occur during the process
+        console.error('Error retrieving coiffeur details:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 // Simple GET route for /login
 app.get('/login', (req, res) => {
@@ -58,6 +95,8 @@ app.get('/Clients', async (req, res) => {
     }
 });
 
+
+//Coiffeurs
 app.get('/Coiffeurs', async (req, res) => {
     try {
         const clients = await db('Coiffeurs').select('*');
@@ -68,9 +107,10 @@ app.get('/Coiffeurs', async (req, res) => {
     }
 });
 
-app.get('/ClientProfiles', async (req, res) => {
+//Appointment
+app.get('/Appointment', async (req, res) => {
     try {
-        const clients = await db('ClientProfiles').select('*');
+        const clients = await db('Appointment').select('*');
         return res.json(clients);
     } catch (err) {
         console.error('Error retrieving clients:', err);
@@ -78,16 +118,7 @@ app.get('/ClientProfiles', async (req, res) => {
     }
 });
 
-app.get('/Appointments', async (req, res) => {
-    try {
-        const clients = await db('Appointments').select('*');
-        return res.json(clients);
-    } catch (err) {
-        console.error('Error retrieving clients:', err);
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
+//CoiffeurReviews
 app.get('/CoiffeurReviews', async (req, res) => {
     try {
         const clients = await db('CoiffeurReviews').select('*');
@@ -97,6 +128,8 @@ app.get('/CoiffeurReviews', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
 
 
 function authenticateToken(req, res, next) {
