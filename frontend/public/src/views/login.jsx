@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 function Login() {
@@ -10,12 +10,17 @@ function Login() {
     event.preventDefault();
     axios.post('http://localhost:3000/login', { email, password })
   .then(res => {
-    const { token, clientId } = res.data; // Destructure the response to get token and clientId
+    const { token, userType, userId } = res.data;
     localStorage.setItem('token', token);
-    localStorage.setItem('clientId', clientId); // Store the user's ID in local storage
+    if (userType === 'client') {
+        localStorage.setItem('clientId', userId);
+        localStorage.removeItem('coiffeurId'); // Remove any existing coiffeurId
+    } else {
+        localStorage.setItem('coiffeurId', userId);
+        localStorage.removeItem('clientId'); // Remove any existing clientId
+    }
     console.log('Login successful');
-    // Redirect upon successful login
-    window.location.href = '/Home'; // Redirect using JavaScript
+    window.location.href = '/Home';
   })
   .catch(err => {
     setError('Invalid email or password');
