@@ -19,7 +19,7 @@ function App() {
         <button>Recherche</button>
       </div>
       {data.map(item => (
-          <div class="grid is-col-min-10" key={item.id}>
+          <div className="grid is-col-min-10" key={item.id}>
              <CoiffeurCarte
                 ShopName={item.ShopName}
                 nomCoiffeur={item.Username}
@@ -29,7 +29,7 @@ function App() {
               />
           </div>
         ))}
-          <button class="button is-danger">Danger</button>
+          <button className="button is-danger">Danger</button>
 
     </>
   );
