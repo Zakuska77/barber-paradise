@@ -37,15 +37,31 @@ CREATE TABLE ListFav (
 );
 
 
-create table Appointment(
+CREATE TABLE Appointment (
     AppointmentID INT PRIMARY KEY IDENTITY(1,1),
     ClientID INT,
     CoiffeurID INT,
-    AppointmentDateTime DATETIME,
+    Year INT,
+    month INT,
+    Day INT,
+    AppointmentTime TIME,
     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID),
     IsAvailable BIT
 );
+
+
+CREATE TABLE CoiffeurAvailability (
+    CoiffeurID INT NOT NULL,
+    DayOfWeek INT NOT NULL, -- 1: Sunday, 2: Monday, ..., 7: Saturday
+    StartTime TIME NOT NULL,
+    EndTime TIME NOT NULL,
+    PRIMARY KEY (CoiffeurID, DayOfWeek),
+    FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
+);
+
+    
+
 
 -- Table pour les profils des clients
 CREATE TABLE CoiffeurServices (
@@ -56,6 +72,7 @@ CREATE TABLE CoiffeurServices (
     Price DECIMAL(10, 2),
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
 );
+
 
 
 --Table pour la liste des images des coiffeurs
@@ -89,16 +106,33 @@ VALUES
 ('client2', 'password2', 'client2@example.com'),
 ('client3', 'password3', 'client3@example.com');
 
-INSERT INTO Coiffeurs (Username, Password, Email, Location, PhoneNumber, profilePic, Availability, ShopName, ImageShop)
+INSERT INTO Coiffeurs (Username, Password, Email, profilePic)
 VALUES 
-('coiffeur1', 'password1', 'coiffeur1@example.com', 'Paris', '1234567890', 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=2188&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'Available', 'Shop1', 'https://images.unsplash.com/photo-1576168056582-0a851a87ab8e?q=80&w=2204&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
-('coiffeur2', 'password2', 'coiffeur2@example.com', 'Lyon', '9876543210', 'https://images.pexels.com/photos/2040189/pexels-photo-2040189.jpeg', 'Not available', 'Shop2', 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=2188&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+('coiffeur1', 'password1', 'coiffeur1@example.com', 'https://www.shutterstock.com/image-photo/barber-barbershop-hairdresser-beauty-salon-260nw-752120878.jpg'),
+('coiffeur2', 'password2', 'coiffeur2@example.com', 'https://as2.ftcdn.net/v2/jpg/02/52/22/81/1000_F_252228190_0UhanUm8GKG6ySZPmUawxa16WBcm11sr.jpg'),
+('coiffeur3', 'password3', 'coiffeur3@example.com', 'https://www.shutterstock.com/image-photo/smiling-woman-curly-red-hair-600nw-2403270217.jpg');
+
+INSERT INTO CoiffeurAvailability (CoiffeurID, DayOfWeek , StartTime, EndTime)
+VALUES
+    (2, 1, '09:00:00', '17:00:00'), -- Sunday, available from 9:00 AM to 5:00 PM
+    (2, 2, '09:00:00', '17:00:00'), -- Monday, available from 9:00 AM to 5:00 PM
+    (2, 3, '09:00:00', '17:00:00'), -- Tuesday, available from 9:00 AM to 5:00 PM
+    (2, 4, '09:00:00', '17:00:00'), -- Wednesday, available from 9:00 AM to 5:00 PM
+    (2, 5, '09:00:00', '17:00:00'), -- Thursday, available from 9:00 AM to 5:00 PM
+    (2, 6, '09:00:00', '17:00:00'), -- Friday
+    (2, 7, '09:00:00', '17:00:00'); -- Saturday
+
+INSERT INTO Appointment (ClientID, CoiffeurID, Year, month, Day, AppointmentTime, IsAvailable)
+VALUES
+    (1, 1, 2024, 4, 1, '10:00:00', 1)
+
 
 select * from Clients
 
 select * from Coiffeurs
 
-
 select * from Appointment
+
+select * from CoiffeurAvailability
 
 
