@@ -24,9 +24,9 @@ const CoiffeurCarte = ({ ImageShop, ShopName, Location, Availability, Username }
                 </div>
 
                 <div className="content">
-                    <p className="subtitle is-4">{Username}</p>
-                    <p className="subtitle is-6">{Location}</p>
-                    <p className="subtitle is-6">{Availability}
+                    <p className="subtitle is-4">Nom Coiffeur : {Username}</p>
+                    <p className="subtitle is-6">Adress : {Location}</p>
+                    <p className="subtitle is-6">Disponibiliter : {Availability}
 
                     </p>
                 </div>
