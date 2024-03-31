@@ -11,7 +11,7 @@ function Login() {
     return (  
     
     <>
-        <form className="box mt-4 mb-4 has-background-black-ter">
+        <form className="box mt-4 mb-4 ">
             <h1 className="title mt-2 mb-2"> Page de Login</h1>
       <div class="field">
         <label class="label">Email</label>
@@ -27,7 +27,7 @@ function Login() {
         </div>
       </div>
     
-      <button className="button is-info is-inverted">Sign in</button>
+      <button className="button is-info">Sign in</button>
       <button onClick={handleClick} className="button is-link is-inverted ml-2">New User </button>
     </form>
         
