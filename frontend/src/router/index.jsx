@@ -1,13 +1,17 @@
 import {
     createBrowserRouter,
   } from "react-router-dom";
-  
+  import React from 'react'
   import App from "../views/Home.jsx";
-  import Page01 from "../views/Page01.jsx";
-  import Page02 from "../views/Page02.jsx";
-  import CoiffeurDetails from "../views/CoiffeurDetails.jsx";
+  import Information from "../views/Information.jsx";
+  import Account from "../views/Account.jsx";
+  import Login from "../views/Login.jsx";
   import NoMatch from "../views/NoMatch.jsx";
   import Root from "../App.jsx";
+  import CreationCompt from "../views/CreationCompt.jsx";
+  import Home from "../views/Home.jsx";
+ 
+  
   
   const router = createBrowserRouter([
     {
@@ -16,10 +20,12 @@ import {
       errorElement: <NoMatch />,
       children: [
         { path: "/", element: <App/> },
-  
-        { path: "/page01", element: <Page01/> },
-        { path: "/page02", element: <Page02/> },
-        { path: "/details/:id", element: <CoiffeurDetails/> },
+        { path: "/Home", element: <Home/> },
+        { path: "/Information/:id", element: <Information/> },
+        { path: "/Account", element: <Account/> },
+        { path: "/Login", element: <Login/> },
+        { path: "/Creation", element: <CreationCompt/> },
+        
       ]},
   ]);
   
