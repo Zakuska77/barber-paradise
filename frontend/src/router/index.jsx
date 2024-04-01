@@ -1,33 +1,36 @@
-import {
-    createBrowserRouter,
-  } from "react-router-dom";
-  import React from 'react'
-  import App from "../views/Home.jsx";
-  import Information from "../views/Information.jsx";
-  import Account from "../views/Account.jsx";
-  import Login from "../views/Login.jsx";
-  import NoMatch from "../views/NoMatch.jsx";
-  import Root from "../App.jsx";
-  import CreationCompt from "../views/CreationCompt.jsx";
-  import Home from "../views/Home.jsx";
- 
-  
-  
-  const router = createBrowserRouter([
+import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import Root from '../App.jsx';
+import Information from '../views/Information.jsx';
+import Account from '../views/Account.jsx';
+import Login from '../views/Login.jsx';
+import NoMatch from '../views/NoMatch.jsx';
+import CreationCompt from '../views/CreationCompt.jsx';
+import Home from '../views/Home.jsx';
+
+const token = localStorage.getItem('token');
+
+const router = !token ? (
+  createBrowserRouter([
+    { path: '/', element: <Login /> },
+    { path: '/Login', element: <Login /> },
+    { path: '/Creation', element: <CreationCompt /> },
+  ])
+) : (
+  createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <Root />,
       errorElement: <NoMatch />,
       children: [
-        { path: "/", element: <App/> },
-        { path: "/Home", element: <Home/> },
-        { path: "/Information/:id", element: <Information/> },
-        { path: "/Account", element: <Account/> },
-        { path: "/Login", element: <Login/> },
-        { path: "/Creation", element: <CreationCompt/> },
-        
-      ]},
-  ]);
-  
-  export default router;
-  
+        { path: '/', element: <Home /> },
+        { path: '/Home', element: <Home /> },
+        { path: '/Information/:id', element: <Information /> },
+        { path: '/Account', element: <Account /> },
+        // Add more routes for authenticated users
+      ],
+    },
+  ])
+);
+
+export default router;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { api } from "../api/api";
 import CoiffeurCarte from "../components/CoiffeurCarte";
 import { useNavigate } from "react-router-dom";
@@ -35,6 +35,7 @@ function App() {
       console.log('error', inputData)
     }
   }
+  console.log(localStorage.getItem('token'));
 
   return (
     <>
