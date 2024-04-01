@@ -36,6 +36,7 @@ function App1() {
             Email={data.Email}
             PhoneNumber={data.PhoneNumber}
             Service={data.Service}
+            profilePic={data.profilePic}
           />
         </div>
         <form className="box mt-4 mb-8 p-2">
