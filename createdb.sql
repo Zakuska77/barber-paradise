@@ -23,10 +23,10 @@ CREATE TABLE Coiffeurs (
     Location varchar(255),
     PhoneNumber VARCHAR(20),
     profilePic VARCHAR(MAX),
-    Availability varchar,
     ShopName varchar(50),
     ImageShop VARCHAR(MAX)
 );
+
 
 
 CREATE TABLE ListFav (
@@ -41,26 +41,53 @@ CREATE TABLE Appointment (
     AppointmentID INT PRIMARY KEY IDENTITY(1,1),
     ClientID INT,
     CoiffeurID INT,
+    ServiceID INT, -- New column for service ID
     Year INT,
-    month INT,
+    Month INT,
     Day INT,
-    AppointmentTime TIME,
+    AppointmentTime INT,
+    IsAvailable BIT,
     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID),
-    IsAvailable BIT
+    FOREIGN KEY (ServiceID) REFERENCES CoiffeurServices(ServiceID)
 );
 
 
 CREATE TABLE CoiffeurAvailability (
     CoiffeurID INT NOT NULL,
     DayOfWeek INT NOT NULL, -- 1: Sunday, 2: Monday, ..., 7: Saturday
-    StartTime TIME NOT NULL,
-    EndTime TIME NOT NULL,
+    StartTime int NOT NULL,
+    EndTime int NOT NULL,
     PRIMARY KEY (CoiffeurID, DayOfWeek),
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
 );
 
+INSERT INTO CoiffeurAvailability (CoiffeurID, DayOfWeek , StartTime, EndTime)
+VALUES
+    (2, 1, 9, 17), -- sunday, available from 9:00 AM to 5:00 PM
+    (2, 2, 9, 17), -- monday, available from 9:00 AM to 5:00 PM
+    (2, 3, 9, 17), -- tuesday, available from 9:00 AM to 5:00 PM
+    (2, 4, 9, 17), -- wednesday, available from 9:00 AM to 5:00 PM
+    (2, 5, 9, 17), -- thursday, available from 9:00 AM to 5:00 PM
+    (2, 6, 9, 17), --friday
+    (2, 7, 9, 17) --saturday
+
+INSERT INTO CoiffeurAvailability (CoiffeurID, DayOfWeek , StartTime, EndTime)
+VALUES
+    (1, 1, 9, 17), -- sunday, available from 9:00 AM to 5:00 PM
+    (1, 2, 9, 17), -- monday, available from 9:00 AM to 5:00 PM
+    (1, 3, 9, 17), -- tuesday, available from 9:00 AM to 5:00 PM
+    (1, 4, 9, 17), -- wednesday, available from 9:00 AM to 5:00 PM
+    (1, 5, 9, 17), -- thursday, available from 9:00 AM to 5:00 PM
+    (1, 6, 9, 17), --friday
+    (1, 7, 9, 17) --saturday
+
+
     
+select * from CoiffeurAvailability
+
+select * from Appointment
+
 
 
 -- Table pour les profils des clients
@@ -73,6 +100,7 @@ CREATE TABLE CoiffeurServices (
     FOREIGN KEY (CoiffeurID) REFERENCES Coiffeurs(CoiffeurID)
 );
 
+select * from CoiffeurAvailability
 
 
 --Table pour la liste des images des coiffeurs
@@ -112,19 +140,22 @@ VALUES
 ('coiffeur2', 'password2', 'coiffeur2@example.com', 'https://as2.ftcdn.net/v2/jpg/02/52/22/81/1000_F_252228190_0UhanUm8GKG6ySZPmUawxa16WBcm11sr.jpg'),
 ('coiffeur3', 'password3', 'coiffeur3@example.com', 'https://www.shutterstock.com/image-photo/smiling-woman-curly-red-hair-600nw-2403270217.jpg');
 
-INSERT INTO CoiffeurAvailability (CoiffeurID, DayOfWeek , StartTime, EndTime)
-VALUES
-    (2, 1, '09:00:00', '17:00:00'), -- Sunday, available from 9:00 AM to 5:00 PM
-    (2, 2, '09:00:00', '17:00:00'), -- Monday, available from 9:00 AM to 5:00 PM
-    (2, 3, '09:00:00', '17:00:00'), -- Tuesday, available from 9:00 AM to 5:00 PM
-    (2, 4, '09:00:00', '17:00:00'), -- Wednesday, available from 9:00 AM to 5:00 PM
-    (2, 5, '09:00:00', '17:00:00'), -- Thursday, available from 9:00 AM to 5:00 PM
-    (2, 6, '09:00:00', '17:00:00'), -- Friday
-    (2, 7, '09:00:00', '17:00:00'); -- Saturday
+-- Inserting services for CoiffeurID 1
+INSERT INTO CoiffeurServices (CoiffeurID, ServiceName, Description, Price)
+VALUES (1, 'Haircut', 'Standard haircut service', 25.00),
+       (1, 'Hair Coloring', 'Professional hair coloring service', 50.00),
+       (1, 'Hair Styling', 'Specialized hair styling service', 30.00);
 
-INSERT INTO Appointment (ClientID, CoiffeurID, Year, month, Day, AppointmentTime, IsAvailable)
-VALUES
-    (1, 1, 2024, 4, 1, '10:00:00', 1)
+-- Inserting services for CoiffeurID 2
+INSERT INTO CoiffeurServices (CoiffeurID, ServiceName, Description, Price)
+VALUES (2, 'Beard Trim', 'Expert beard trimming service', 15.00),
+       (2, 'Shave', 'Traditional straight razor shave', 20.00),
+       (2, 'Haircut', 'Classic mens haircut', 20.00);
+
+
+INSERT INTO Appointment (ClientID, CoiffeurID, ServiceID, Year, Month, Day, AppointmentTime, IsAvailable)
+VALUES 
+(1, 1, 1, 2024, 4, 1, 10, 1)
 
 
 select * from Clients
@@ -135,4 +166,10 @@ select * from Appointment
 
 select * from CoiffeurAvailability
 
+select * from ListFav
 
+select * from CoiffeurReviews
+
+select * from CoiffeurServices
+
+select * from CoiffeurPictures
