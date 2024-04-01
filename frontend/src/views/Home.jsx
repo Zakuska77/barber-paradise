@@ -29,12 +29,11 @@ function App() {
         </div>
       </div>
       {data.map(item => (
-        <div className="grid is-col-min-10" key={item.CoiffeurID} onClick={() => handleClick(item.CoiffeurID)}
-        >
+        <div className="grid is-col-min-10" key={item.CoiffeurID} onClick={() => handleClick(item.CoiffeurID)}>
           <CoiffeurCarte
             ShopName={item.ShopName}
-            nomCoiffeur={item.Username}
-            Availability={item.Availability}
+            Username={item.Username}  // Corrected prop name
+            Availability={item.Availability} // Added prop
             Location={item.Location}
             ImageShop={item.ImageShop}
           />
