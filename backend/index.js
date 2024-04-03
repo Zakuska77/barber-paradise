@@ -58,12 +58,12 @@ app.get('/CoiffeurDetails/:id', async (req, res) => {
     try {
         // Fetch coiffeur details from the database based on the provided ID
         const coiffeurData = await db('Coiffeurs').where('CoiffeurID', coiffeurId).first();
-        
+
         // Check if coiffeur data exists
         if (!coiffeurData) {
             return res.status(404).json({ message: 'Coiffeur not found' });
         }
-        
+
         // If coiffeur data exists, return it as JSON response
         return res.json(coiffeurData);
     } catch (err) {
@@ -80,12 +80,12 @@ app.get('/clientDetails/:id', async (req, res) => {
     try {
         // Fetch client details from the database based on the provided ID
         const clientData = await db('Clients').where('ClientID', clientId).first();
-        
+
         // Check if client data exists
         if (!clientData) {
             return res.status(404).json({ message: 'Client not found' });
         }
-        
+
         // If client data exists, return it as JSON response
         return res.json(clientData);
     } catch (err) {
@@ -173,7 +173,6 @@ app.post('/AddAppointment/:id', async (req, res) => {
 });
 
 
-
 //Create Account client
 app.post('/CreateClientAccount', async (req, res) => {
     try {
@@ -187,11 +186,11 @@ app.post('/CreateClientAccount', async (req, res) => {
         // Check if the email or username is already taken
         const existingEmail = await db('Clients').where('Email', Email).first();
         const existingUsername = await db('Clients').where('Username', Username).first();
-        
+
         if (existingEmail) {
             return res.status(400).json({ message: 'Email already exists' });
         }
-        
+
         if (existingUsername) {
             return res.status(400).json({ message: 'Username already exists' });
         }
@@ -223,11 +222,11 @@ app.post('/CreateCoiffeurAccount', async (req, res) => {
         // Check if the email or username is already taken
         const existingEmail = await db('Coiffeurs').where('Email', Email).first();
         const existingUsername = await db('Coiffeurs').where('Username', Username).first();
-        
+
         if (existingEmail) {
             return res.status(400).json({ message: 'Email already exists' });
         }
-        
+
         if (existingUsername) {
             return res.status(400).json({ message: 'Username already exists' });
         }
@@ -607,6 +606,52 @@ app.delete('/removePicture/:coiffeurId/:pictureId', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+//------------------------------------Added---------------------------------------------->
+// Get Coiffeur availability
+app.get('/coiffeurAvailability/:id/:day', async (req, res) => {
+    const coiffeurID = req.params.id;
+    const dayOfWeek = req.params.day;
+    try {
+        const availability = await db('CoiffeurAvailability')
+            .where({ CoiffeurID: coiffeurID, DayOfWeek: dayOfWeek })
+            .select('*');
+        return res.json(availability);
+    } catch (err) {
+        console.error('Error retrieving coiffeur availability:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+//Get Review by ID
+app.get('/ReviewCoiffeur/:id', async (req, res) => {
+    const coiffeurID = req.params.id;
+    try {
+        const reviews = await db('CoiffeurReviews')
+            .where({ coiffeurID: coiffeurID })
+            .select('*');
+        return res.json(reviews);
+    } catch (err) {
+        console.error('Error retrieving coiffeur Reviews:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+//Get Service by ID
+app.get('/servicesCoiffeur/:id', async (req, res) => {
+    const coiffeurID = req.params.id;
+    try {
+        const services = await db('CoiffeurServices')
+        .where({coiffeurID: coiffeurID})
+        .select('*');
+        return res.json(services);
+    } catch (err) {
+        console.error('Error retrieving services:', err);
+        return res.status(500).json({error: 'internal server error'})
+    }
+});
+
 
 //----------------------------------------------------------------------------------
 
