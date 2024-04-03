@@ -16,9 +16,23 @@ function App1() {
   const [selectedService, setSelectedService] = useState('');
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [userType, setUserType] = useState(null); // State to store UserType
 
   useEffect(() => {
     const fetchData = async () => {
+      // Fetch UserId and UserType from browser's storage
+      const userIdFromStorage = localStorage.getItem('userId');
+      const userTypeFromStorage = localStorage.getItem('userType');
+
+      if (userIdFromStorage) {
+        setUserId(userIdFromStorage);
+      }
+
+      if (userTypeFromStorage) {
+        setUserType(userTypeFromStorage);
+      }
+
       try {
         const coiffeurDetailsResponse = await fetch(`${api}/CoiffeurDetails/${params.id}`);
         const coiffeurDetailsData = await coiffeurDetailsResponse.json();
@@ -48,6 +62,16 @@ function App1() {
   }, [params.id]);
 
   const handleAddAppointment = async () => {
+    if (!userId) {
+      alert('User not logged in');
+      return;
+    }
+
+    if (userType !== 'client') {
+      alert('You must be a client to make a reservation');
+      return;
+    }
+
     if (!selectedService) {
       alert('Please select a service');
       return;
@@ -62,14 +86,13 @@ function App1() {
     const month = selectedDate.getMonth() + 1;
     const day = selectedDate.getDate();
 
-    // Replace hardcoded ClientID with dynamic value
     const requestBody = {
-      ClientID: 1, // Replace with actual client ID
+      ClientID: userId, // Use the stored UserId
       ServiceID: selectedService,
       Year: year,
       Month: month,
       Day: day,
-      AppointmentTime: parseInt(selectedHour) // Convert selectedHour to integer
+      AppointmentTime: parseInt(selectedHour)
     };
 
     try {
@@ -97,6 +120,16 @@ function App1() {
   };
 
   const handlePostComment = async () => {
+    if (!userId) {
+      alert('User not logged in');
+      return;
+    }
+
+    if (userType !== 'client') {
+      alert('You must be a client to post a comment');
+      return;
+    }
+
     if (!rating || !comment) {
       alert('Please provide rating and comment');
       return;
@@ -109,7 +142,7 @@ function App1() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          ClientID: 1, // Assuming ClientID is always 1 for this scenario
+          ClientID: userId, // Use the stored UserId
           CoiffeurID: params.id,
           Rating: rating,
           ReviewText: comment
@@ -120,7 +153,6 @@ function App1() {
         const responseData = await response.json();
         console.log(responseData);
         alert('Comment posted successfully');
-        // Clear the input fields after successful posting
         setRating(0);
         setComment('');
       } else {

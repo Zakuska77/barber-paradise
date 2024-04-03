@@ -1,17 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../api/api"; // Assuming you have defined the base URL in api/api.js
 
 function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   function toRegister() {
     navigate("/Creation");
   }
-  function login(){
-    console.log(email, password);
+
+  async function login() {
+    try {
+      const response = await fetch(`${api}/login`, { // Using dynamic URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const userData = await response.json();
+      localStorage.setItem("token", userData.token);
+      localStorage.setItem("userType", userData.userType);
+      localStorage.setItem("userId", userData.userId);
+      
+      // Redirect user to the appropriate page after successful login
+      // For example, you can redirect them to the homepage
+      navigate("/");
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle login error (display error message, etc.)
+    }
   }
+
   return (
     <>
       <div className="m-6 p-4">
@@ -48,4 +76,5 @@ function Login() {
     </>
   )
 }
+
 export default Login;
