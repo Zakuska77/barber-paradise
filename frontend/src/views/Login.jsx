@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { api } from "../api/api";
+=======
+import { api } from "../api/api"; // Assuming you have defined the base URL in api/api.js
+>>>>>>> Duc-Anh
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -11,6 +15,7 @@ function Login() {
     navigate("/Creation");
   }
 
+<<<<<<< HEAD
   function login() {
     fetch(`${api}/login`, {
       method: "POST",
@@ -32,6 +37,35 @@ function Login() {
       }
     })
     .catch(error => console.error('Error logging in:', error));
+=======
+  async function login() {
+    try {
+      const response = await fetch(`${api}/login`, { // Using dynamic URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const userData = await response.json();
+      localStorage.setItem("token", userData.token);
+      localStorage.setItem("userType", userData.userType);
+      localStorage.setItem("userId", userData.userId);
+      
+      // Redirect user to the appropriate page after successful login
+      // For example, you can redirect them to the homepage
+      navigate("/");
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle login error (display error message, etc.)
+    }
+>>>>>>> Duc-Anh
   }
 
   return (
@@ -71,4 +105,8 @@ function Login() {
   );
 }
 
+<<<<<<< HEAD
 export default Login;
+=======
+export default Login;
+>>>>>>> Duc-Anh
