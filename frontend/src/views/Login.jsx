@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import { api } from "../api/api";
-=======
 import { api } from "../api/api"; // Assuming you have defined the base URL in api/api.js
->>>>>>> Duc-Anh
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,29 +11,6 @@ function Login() {
     navigate("/Creation");
   }
 
-<<<<<<< HEAD
-  function login() {
-    fetch(`${api}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      })
-    })
-    .then((res) => res.json())    
-    .then((data) => {
-      if (data.error) {
-        alert(data.error);
-      } else {
-        localStorage.setItem("token", data.token);
-        navigate("/Home");
-      }
-    })
-    .catch(error => console.error('Error logging in:', error));
-=======
   async function login() {
     try {
       const response = await fetch(`${api}/login`, { // Using dynamic URL
@@ -65,7 +38,6 @@ function Login() {
       console.error("Login error:", error);
       // Handle login error (display error message, etc.)
     }
->>>>>>> Duc-Anh
   }
 
   return (
@@ -99,14 +71,10 @@ function Login() {
             <button className="button is-info" onClick={login}>Sign in</button>
             <button onClick={toRegister} className="button is-link is-inverted ml-2">New User </button>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
     </>
-  );
+  )
 }
 
-<<<<<<< HEAD
 export default Login;
-=======
-export default Login;
->>>>>>> Duc-Anh
