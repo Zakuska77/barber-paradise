@@ -1,10 +1,46 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../api/api";
 
-function Creation() {
+
+function CreationCompteClient() {
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        Username: "",
+        Password: "",
+        Email: "",
+        PhoneNumber: ""
+    });
 
-    function handleClick() {
-        navigate("/Home");
+
+    function handleChange(event) {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        try {
+            const response = await fetch(`${api}/CreateClientAccount`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+            if (response.ok) {
+                navigate("/Home");
+            } else {
+                const data = await response.json();
+                alert(data.message); // Display error message from backend
+            }
+        } catch (error) {
+            console.error("Error creating account:", error);
+            alert("Failed to create account. Please try again later.");
+        }
     }
 
     function RetourLog() {
@@ -13,92 +49,42 @@ function Creation() {
 
     return (
         <>
-            <form className="box mt-4 mb-4 has-background-black-ter">
+            <form className="box mt-4 mb-4 has-background-black-ter" onSubmit={handleSubmit}>
                 <h1 className="title mt-2 mb-2">Creation compte</h1>
                 <div className="field">
-                    <label className="label">Name</label>
-                    <div className="control">
-                        <input className="input" type="text" placeholder="Text input" />
-                    </div>
-                </div>
-
-                <div className="field">
                     <label className="label">Username</label>
-                    <div className="control has-icons-left has-icons-right">
-                        <input className="input " type="text" placeholder="Text input" />
-                    </div>
-                </div>
-
-                <div className="field">
-                    <label className="label">Email</label>
-                    <div className="control has-icons-left has-icons-right">
-                        <input className="input " type="email" placeholder="Email input" />
-                    </div>
-                </div>
-
-                <div className="field">
-                    <label className="label">Num</label>
-                    <div className="control has-icons-left has-icons-right">
-                        <input className="input " type="text" placeholder="Numero de telephone" />
-                    </div>
-                </div>
-
-                <div className="field">
-                    <label className="label">Date de naissance</label>
-                    <div className="control has-icons-left has-icons-right">
-                        <input className="input " type="text" placeholder="Date de naissance" />
+                    <div className="control">
+                        <input className="input" type="text" placeholder="Username" name="Username" value={formData.Username} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Password</label>
-                    <div className="control has-icons-left has-icons-right">
-                        <input className="input " type="text" placeholder="Password" />
-                        <input className="input mt-2" type="text" placeholder="Password verification" />
+                    <div className="control">
+                        <input className="input" type="Password" placeholder="Password" name="Password" value={formData.Password} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
-                    <label className="label">Subject</label>
+                    <label className="label">Email</label>
                     <div className="control">
-                        <div className="select">
-                            <select>
-                                <option>Genre</option>
-                                <option>Femme</option>
-                                <option>Homme</option>
-                                <option>Autre</option>
-                            </select>
-                        </div>
+                        <input className="input" type="Email" placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
                     </div>
                 </div>
 
-                <div class="file is-boxed">
-                    <label class="file-label">
-                        <input class="file-input" type="file" name="resume" />
-                        <span class="file-cta">
-                            <span class="file-icon">
-                                <i class="fas fa-upload"></i>
-                            </span>
-                            <span class="file-label"> Choose a file… </span>
-                        </span>
-                    </label>
-                </div>
-
                 <div className="field">
+                    <label className="label">Phone Number</label>
                     <div className="control">
-                        <label className="checkbox">
-                            <input type="checkbox" />
-                            I agree to the <a href="#">terms and conditions</a>
-                        </label>
+                        <input className="input" type="text" placeholder="Phone Number" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field is-grouped">
                     <div className="control">
-                        <button onClick={handleClick} className="button is-link">Submit</button>
+                        <button type="submit" className="button is-link">Submit</button>
                     </div>
                     <div className="control">
-                        <button onClick={RetourLog} className="button is-link is-light">Cancel</button>
+                        <button type="button" onClick={RetourLog} className="button is-link is-light">Cancel</button>
                     </div>
                 </div>
             </form>
@@ -106,4 +92,4 @@ function Creation() {
     );
 }
 
-export default Creation;
+export default CreationCompteClient;
