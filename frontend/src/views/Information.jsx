@@ -195,15 +195,18 @@ function App1() {
           </div>
         </div>
         <div className="box mt-4 mb-8 p-2">
-          <h1 className="title mt-2 mb-2">Reservation</h1>
-          <div className="select is-rounded">
-            <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
-              <option value="">Select a Service</option>
-              {services.map(service => (
-                <option key={service.ServiceID} value={service.ServiceID}>{service.ServiceName}</option>
-              ))}
-            </select>
-            <div className="datepicker">
+          <div class="columns">
+            <div class="column is-half">
+              <div className="select">
+                <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
+                  <option value="">Select a Service</option>
+                  {services.map(service => (
+                    <option key={service.ServiceID} value={service.ServiceID}>{service.ServiceName}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="column">
               <DatePicker
                 selected={selectedDate}
                 onChange={date => setSelectedDate(date)}
@@ -212,25 +215,37 @@ function App1() {
                 placeholderText="Select a date"
               />
             </div>
-            <form>
-              <label htmlFor="hour">Time:</label>
-              <input type="number" id="hour" name="hour" min="0" max="24" step="1" value={selectedHour} onChange={e => setSelectedHour(e.target.value)} />
-            </form>
-            <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserver</button>
+            <div class="column">
+              <form>
+                <label htmlFor="hour">Time:</label>
+                <input type="number" id="hour" name="hour" min="0" max="24" step="1" value={selectedHour} onChange={e => setSelectedHour(e.target.value)} />
+              </form>
+            </div>
           </div>
+          <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserver</button>
         </div>
-        
+
         <div className="box mt-4 mb-8 p-2">
-          <h1 className="title mt-2 mb-2">Leave a Comment</h1>
           <div className="rating">
             <label htmlFor="rating">Rating:</label>
             <input type="number" id="rating" name="rating" min="0" max="5" step="1" value={rating} onChange={e => setRating(e.target.value)} />
           </div>
+        </div>
+        <div className="box mt-4 mb-8 p-2">
           <div className="comment">
-            <label htmlFor="comment">Comment:</label>
-            <textarea id="comment" name="comment" value={comment} onChange={e => setComment(e.target.value)} />
+            <h1 className="title mt-2 mb-2">Leave a Comment</h1>
+            <div className="field is-horizontal">
+
+              <div className="field-body">
+                <div className="field">
+                  <div className="control pr-6 pl-1">
+                    <textarea className="textarea m-4" id="comment" name="comment" value={comment} onChange={e => setComment(e.target.value)} placeholder="Leave a Comment" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <button className="button is-primary" onClick={handlePostComment}>Post Comment</button>
+          <button className="button is-primary ml-4 mt-2 mb-4 " onClick={handlePostComment}>Post Comment</button>
         </div>
         <div className="comments">
           <h1 className="title mt-2 mb-2">Comments</h1>
