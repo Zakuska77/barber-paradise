@@ -653,6 +653,39 @@ app.get('/servicesCoiffeur/:id', async (req, res) => {
 });
 
 
+//modify coiffeur availability
+app.post('/ModifyCoiffeurAvailability', async (req, res) => {
+    try {
+        const { CoiffeurID, Availability } = req.body;
+
+        // Validate the presence of required fields
+        if (!CoiffeurID || !Availability) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Delete previous availability entries for the specified coiffeur ID
+        await db('CoiffeurAvailability').where('CoiffeurID', CoiffeurID).del();
+
+        // Insert new availability entries for the specified coiffeur ID
+        await Promise.all(Availability.map(async (availability) => {
+            await db('CoiffeurAvailability').insert({
+                CoiffeurID,
+                DayOfWeek: availability.DayOfWeek,
+                StartTime: availability.StartTime,
+                EndTime: availability.EndTime
+            });
+        }));
+
+        // Respond with success message
+        return res.status(200).json({ message: 'Coiffeur availability modified successfully' });
+    } catch (err) {
+        // Handle any errors that occur during the process
+        console.error('Error modifying coiffeur availability:', err);
+        return res.status(500).json({ error: 'Internal server error', message: err.message });
+    }
+});
+
+
 //----------------------------------------------------------------------------------
 
 // Simple GET route for /login

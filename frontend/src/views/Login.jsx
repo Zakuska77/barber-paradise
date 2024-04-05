@@ -7,8 +7,12 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  function toRegister() {
-    navigate("/Creation");
+  function toRegisterClient() {
+    navigate("/CreationCompteClient");
+  }
+
+  function toRegisterCoiffeur() {
+    navigate("/CreationCompteCoiffeur");
   }
 
   async function login() {
@@ -31,12 +35,11 @@ function Login() {
       localStorage.setItem("userType", userData.userType);
       localStorage.setItem("userId", userData.userId);
       
-      // Redirect user to the appropriate page after successful login
-      // For example, you can redirect them to the homepage
+   
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
-      // Handle login error (display error message, etc.)
+
     }
   }
 
@@ -69,7 +72,8 @@ function Login() {
           </div>
           <div className="mt-5">
             <button className="button is-info" onClick={login}>Sign in</button>
-            <button onClick={toRegister} className="button is-link is-inverted ml-2">New User </button>
+            <button onClick={toRegisterClient} className="button is-link is-inverted ml-2">Register as Client </button>
+            <button onClick={toRegisterCoiffeur} className="button is-link is-inverted ml-2">Register as Coiffeur </button>
           </div>
         </div >
       </div >
