@@ -11,6 +11,8 @@ import {
   import CreationCompt from "../views/CreationCompt.jsx";
   import CreationCompteCoiffeur from "../views/CreationCompteCoiffeur.jsx";
   import ModifyCoiffeurAvailability from "../views/ModifyCoiffeurAvailability.jsx";
+  import AccountUtilisateur from "../views/AccountUtilisateur.jsx";
+  import AccountCoiffeur from "../views/AccountCoiffeur.jsx"
   
 
   import Home from "../views/Home.jsx";
@@ -31,6 +33,8 @@ import {
         { path: "/CreationCompteClient", element: <CreationCompt/> },
         { path: "/CreationCompteCoiffeur", element: <CreationCompteCoiffeur/> },
         { path: "/ModifyCoiffeurAvailability", element: <ModifyCoiffeurAvailability/> },
+        { path: "/AccountUtilisateur/:id", element: <AccountUtilisateur/> },
+        { path: "/AccountCoiffeur/:id", element: <AccountCoiffeur/> },
         
       ]},
   ]);
