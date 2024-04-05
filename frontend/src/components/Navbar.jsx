@@ -1,18 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
 
 
 export default function Menu() {
   const token = localStorage.getItem('token');
   const userType = localStorage.getItem('userType');
+  const userId = localStorage.getItem('userId');
+  console.log(userId);
+  const navigate = useNavigate()
 
 
   function deconnexion() {
-    localStorage.removeItem('debug');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userType');
-    localStorage.removeItem('userId');
-    console.log(localStorage.getItem('token'));
+    localStorage.clear();
+    // localStorage.removeItem('debug');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('userType');
+    // localStorage.removeItem('userId');
+    // console.log(localStorage.getItem('token'));
+    navigate("/");
+
   }
 
 
@@ -27,12 +33,23 @@ export default function Menu() {
             <span>Home</span>
           </span>
         </Link>
-        <Link to="/Information" className="navbar-item has-text-black">
-          Information
-        </Link>
-        <Link to="/Account" className="navbar-item has-text-black">
-          Account
-        </Link>
+        {userType === "coiffeur" ? (
+          <Link to={`/AccountCoiffeur/${userId}`} className="navbar-item has-text-black">
+            Account
+          </Link>
+        ) :
+          (
+            <Link to={`/AccountUtilisateur/${userId}`} className="navbar-item has-text-black">
+              Account
+            </Link>
+          )}
+        {userType === "coiffeur" && (
+          <Link to="/ModifyCoiffeurAvailability" className="navbar-item has-text-black">
+            Modify Schedule
+          </Link>
+        )}
+      </div>
+      <div className="navbar-end p-2">
         {token ? (
           <button className="button is-danger" onClick={deconnexion}>
             Logout
@@ -42,11 +59,8 @@ export default function Menu() {
             Login
           </Link>
         )}
-        {userType === "coiffeur" && (
-          <Link to="/ModifyCoiffeurAvailability" className="navbar-item has-text-black">
-            Modify Schedule
-          </Link>
-        )}
+
+
       </div>
     </nav>
   );

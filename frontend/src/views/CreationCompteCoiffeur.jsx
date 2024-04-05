@@ -50,62 +50,62 @@ function CreationCompteCoiffeur() {
     }
 
     return (
-        <>
-            <form className="box mt-4 mb-4 has-background-black-ter" onSubmit={handleSubmit}>
+        <div className="m-6 p-4">
+            <form className="box mt-4 mb-4 has-background-grey-lighter" onSubmit={handleSubmit}>
                 <h1 className="title mt-2 mb-2">Creation compte coiffeur</h1>
                 <div className="field">
                     <label className="label">Username</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Username" name="Username" value={formData.Username} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Username" name="Username" value={formData.Username} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Password</label>
                     <div className="control">
-                        <input className="input" type="password" placeholder="Password" name="Password" value={formData.Password} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="password" placeholder="Password" name="Password" value={formData.Password} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Email</label>
                     <div className="control">
-                        <input className="input" type="email" placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="email" placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Location</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Location" name="Location" value={formData.Location} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Location" name="Location" value={formData.Location} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Phone Number</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Phone Number" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Phone Number" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Profile Picture</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Profile Picture" name="profilePic" value={formData.profilePic} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Profile Picture" name="profilePic" value={formData.profilePic} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Shop Name</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Shop Name" name="ShopName" value={formData.ShopName} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Shop Name" name="ShopName" value={formData.ShopName} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Image Shop</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Image Shop" name="ImageShop" value={formData.ImageShop} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="text" placeholder="Image Shop" name="ImageShop" value={formData.ImageShop} onChange={handleChange} />
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@ function CreationCompteCoiffeur() {
                     </div>
                 </div>
             </form>
-        </>
+        </div>
     );
 }
 

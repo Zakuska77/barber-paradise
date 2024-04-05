@@ -40,7 +40,7 @@ function App1() {
 
         const availabilityData = [];
         for (let i = 1; i <= 7; i++) {
-          const availabilityResponse = await fetch(`${api}/coiffeurAvailability/${params.id}/${i}`);
+          const availabilityResponse = await fetch(`${api}/coiffeurAvailability/${params.id}/`);
           const availabilityDataForDay = await availabilityResponse.json();
           availabilityData.push(availabilityDataForDay);
         }

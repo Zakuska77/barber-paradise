@@ -29,15 +29,17 @@ function App() {
           item.ShopName.toLowerCase().includes(inputData.toLowerCase())
         )
       );
-    } else if (inputData.length ===0) {
+    } else if (inputData.length === 0) {
       setFilteredData(data);
-    }else{
+    } else {
       console.log('error', inputData)
     }
   }
+  const userId = localStorage.getItem('userId');
+  console.log(userId);
 
   return (
-    <>
+    <div className="mx-6 my-4">
       <div className="field has-addons mt-4 mb-4">
         <div className="control">
           <input
@@ -69,7 +71,7 @@ function App() {
           />
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
