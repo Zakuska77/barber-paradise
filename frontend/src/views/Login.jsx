@@ -5,7 +5,6 @@ import { api } from "../api/api"; // Assuming you have defined the base URL in a
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   function toRegisterClient() {
@@ -32,18 +31,18 @@ function Login() {
       }
 
       const userData = await response.json();
-      console.log(userData)
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userType", data.userType);
-      localStorage.setItem("userId", data.userId);
-      location.reload();
+      localStorage.setItem("token", userData.token);
+      localStorage.setItem("userType", userData.userType);
+      localStorage.setItem("userId", userData.userId);
+      
+   
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
 
     }
   }
-  console.log(data)
-  
+
   return (
     <>
       <div className="m-6 p-4">

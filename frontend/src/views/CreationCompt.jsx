@@ -48,8 +48,8 @@ function CreationCompteClient() {
     }
 
     return (
-        <>
-            <form className="box mt-4 mb-4 has-background-black-ter" onSubmit={handleSubmit}>
+        <div className="m-6 p-4">
+            <form className="box mt-4 mb-4  has-background-grey-lighter" onSubmit={handleSubmit}>
                 <h1 className="title mt-2 mb-2">Creation compte</h1>
                 <div className="field">
                     <label className="label">Username</label>
@@ -61,21 +61,21 @@ function CreationCompteClient() {
                 <div className="field">
                     <label className="label">Password</label>
                     <div className="control">
-                        <input className="input" type="Password" placeholder="Password" name="Password" value={formData.Password} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="Password" placeholder="Password" name="Password" value={formData.Password} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Email</label>
                     <div className="control">
-                        <input className="input" type="Email" placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
+                        <input className="input has-background-white-ter" type="Email" placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Phone Number</label>
                     <div className="control">
-                        <input className="input" type="text" placeholder="Phone Number" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleChange} />
+                        <input className="input " type="text" placeholder="Phone Number" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleChange} />
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@ function CreationCompteClient() {
                     </div>
                 </div>
             </form>
-        </>
+        </div>
     );
 }
 
