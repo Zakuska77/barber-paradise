@@ -40,7 +40,7 @@ function App1() {
 
         const availabilityData = [];
         for (let i = 1; i <= 7; i++) {
-          const availabilityResponse = await fetch(`${api}/coiffeurAvailability/${params.id}/`);
+          const availabilityResponse = await fetch(`${api}/coiffeurAvailability/${params.id}/${i}`);
           const availabilityDataForDay = await availabilityResponse.json();
           availabilityData.push(availabilityDataForDay);
         }
@@ -165,7 +165,7 @@ function App1() {
       alert('Failed to post comment');
     }
   };
-
+  
   return (
     <>
       <div className="m-4">
@@ -195,8 +195,8 @@ function App1() {
           </div>
         </div>
         <div className="box mt-4 mb-8 p-2">
-          <div class="columns">
-            <div class="column is-half">
+          <div className="columns">
+            <div className="column is-half">
               <div className="select">
                 <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
                   <option value="">Select a Service</option>
@@ -206,7 +206,7 @@ function App1() {
                 </select>
               </div>
             </div>
-            <div class="column">
+            <div className="column">
               <DatePicker
                 selected={selectedDate}
                 onChange={date => setSelectedDate(date)}
@@ -215,7 +215,7 @@ function App1() {
                 placeholderText="Select a date"
               />
             </div>
-            <div class="column">
+            <div className="column">
               <form>
                 <label htmlFor="hour">Time:</label>
                 <input type="number" id="hour" name="hour" min="0" max="24" step="1" value={selectedHour} onChange={e => setSelectedHour(e.target.value)} />
