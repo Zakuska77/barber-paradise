@@ -72,7 +72,7 @@ function Account() {
                        {rendevous.map((item) =>(
                         <tr key={item.AppointmentID}>
                             <td>{item.CoiffeurID}</td>
-                            <td>{toString(item.AppointmentDateTime)}</td>
+                            <td>{item.Day}/{item.Month}/{item.Year} What time :{(item.AppointmentTime)} h</td>
                         </tr>
 
                        ))}
