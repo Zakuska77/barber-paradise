@@ -17,11 +17,11 @@ function App1() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [userId, setUserId] = useState(null);
-  const [userType, setUserType] = useState(null); // State to store UserType
+  const [userType, setUserType] = useState(null);
+  const [clientUsernames, setClientUsernames] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch UserId and UserType from browser's storage
       const userIdFromStorage = localStorage.getItem('userId');
       const userTypeFromStorage = localStorage.getItem('userType');
 
@@ -53,6 +53,15 @@ function App1() {
         const servicesResponse = await fetch(`${api}/servicesCoiffeur/${params.id}`);
         const servicesData = await servicesResponse.json();
         setServices(servicesData);
+
+ 
+        const clientUsernamesMap = {};
+        for (const comment of commentsData) {
+          const clientDetailsResponse = await fetch(`${api}/clientDetails/${comment.ClientID}`);
+          const clientDetails = await clientDetailsResponse.json();
+          clientUsernamesMap[comment.ClientID] = clientDetails.Username;
+        }
+        setClientUsernames(clientUsernamesMap);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -87,7 +96,7 @@ function App1() {
     const day = selectedDate.getDate();
 
     const requestBody = {
-      ClientID: userId, // Use the stored UserId
+      ClientID: userId,
       ServiceID: selectedService,
       Year: year,
       Month: month,
@@ -142,7 +151,7 @@ function App1() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          ClientID: userId, // Use the stored UserId
+          ClientID: userId,
           CoiffeurID: params.id,
           Rating: rating,
           ReviewText: comment
@@ -194,6 +203,7 @@ function App1() {
             ))}
           </div>
         </div>
+  
         <div className="box mt-4 mb-8 p-2">
           <div className="columns">
             <div className="column is-half">
@@ -222,20 +232,13 @@ function App1() {
               </form>
             </div>
           </div>
-          <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserver</button>
+          <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserve</button>
         </div>
-
-        <div className="box mt-4 mb-8 p-2">
-          <div className="rating">
-            <label htmlFor="rating">Rating:</label>
-            <input type="number" id="rating" name="rating" min="0" max="5" step="1" value={rating} onChange={e => setRating(e.target.value)} />
-          </div>
-        </div>
+  
         <div className="box mt-4 mb-8 p-2">
           <div className="comment">
             <h1 className="title mt-2 mb-2">Leave a Comment</h1>
             <div className="field is-horizontal">
-
               <div className="field-body">
                 <div className="field">
                   <div className="control pr-6 pl-1">
@@ -244,26 +247,27 @@ function App1() {
                 </div>
               </div>
             </div>
+            <button className="button is-primary ml-4 mt-2 mb-4 " onClick={handlePostComment}>Post Comment</button>
+            <label htmlFor="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="0" max="5" step="1" value={rating} onChange={e => setRating(e.target.value)} />
           </div>
-          <button className="button is-primary ml-4 mt-2 mb-4 " onClick={handlePostComment}>Post Comment</button>
         </div>
         <div className="comments">
           <h1 className="title mt-2 mb-2">Comments</h1>
-          <ul>
-            {comments.map((comment, index) => (
-              <li key={index}>
-                <p><strong>Rating:</strong> {comment.Rating}</p>
-                <p><strong>Comment:</strong> {comment.ReviewText}</p>
-              </li>
-            ))}
-          </ul>
+          {comments.map((comment, index) => (
+            <div key={index} className="box">
+              <p>{clientUsernames[comment.ClientID]}</p>
+              <p><strong>Rating:</strong> {comment.Rating}</p>
+              <p><strong>Comment:</strong> {comment.ReviewText}</p>
+            </div>
+          ))}
         </div>
       </div>
     </>
   );
 }
 
-// Function to get day name based on index
+
 function getDayName(dayIndex) {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return dayNames[dayIndex];
