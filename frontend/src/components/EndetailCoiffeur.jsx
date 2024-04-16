@@ -33,7 +33,6 @@ const InfoCoiffeur = ({ ImageShop, ShopName, Location, Availability, Username, p
                             <p className="subtitle is-6">Disponibiliter : {Availability}</p>
                             <p className="subtitle is-6">Numero: {PhoneNumber}</p>
                             <p className="subtitle is-6">Email: {Email}</p>
-                            <p className="subtitle is-6">Service : {Service}</p>
                         </div>
                     </div>
                 </div>
