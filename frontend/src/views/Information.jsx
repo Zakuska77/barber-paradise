@@ -172,15 +172,15 @@ function App1() {
         <div className="grid is-col-min-10" key={data.id}>
           <InfoCoiffeur
             ShopName={data.ShopName}
-            nomCoiffeur={data.Username}
+            Username={data.Username}
             Availability={data.Availability}
             Location={data.Location}
             ImageShop={data.ImageShop}
             Email={data.Email}
             PhoneNumber={data.PhoneNumber}
-            Service={data.Service}
             profilePic={data.profilePic}
           />
+          
           <div className="availability">
             {availability.map((dayAvailability, dayIndex) => (
               <div key={dayIndex} className="day-availability">
