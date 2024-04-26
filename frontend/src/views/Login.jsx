@@ -5,6 +5,7 @@ import { api } from "../api/api"; // Assuming you have defined the base URL in a
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const navigate = useNavigate();
 
   function toRegisterClient() {
@@ -14,23 +15,25 @@ function Login() {
   function toRegisterCoiffeur() {
     navigate("/CreationCompteCoiffeur");
   }
-
+console.log(email, password)
   async function login() {
     try {
-      const response = await fetch(`${api}/login`, { // Using dynamic URL
+      const response = await fetch(`${api}/login/`, { // Using dynamic URL
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password })
       });
+      console.log()
 
+      const userData = await response.json();
+      console.log(userData.password)
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
       }
 
-      const userData = await response.json();
       localStorage.setItem("token", userData.token);
       localStorage.setItem("userType", userData.userType);
       localStorage.setItem("userId", userData.userId);
@@ -42,6 +45,7 @@ function Login() {
 
     }
   }
+
 
   return (
     <>
@@ -75,7 +79,7 @@ function Login() {
             <button onClick={toRegisterClient} className="button is-link is-inverted ml-2">Register as Client </button>
             <button onClick={toRegisterCoiffeur} className="button is-link is-inverted ml-2">Register as Coiffeur </button>
           </div>
-        </div >
+        </div>
       </div >
     </>
   )

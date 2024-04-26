@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const db = require('../configs/db');
+const bodyParser = require('body-parser')
+ 
 router.use(express.json());
+router.use(cors());
+
+router.use(bodyParser.json({ type: 'application/*+json' }))
 router.post('/client', async (req, res) => {
     try {
         const { Username, Password, Email, PhoneNumber } = req.body;

@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
+const cors = require('cors');
 const service = require('../service/coiffeur_service')
 
 router.use(express.json());
+router.use(cors());
+
 router.get('/', async (req, res) => {
     try {
         const coiffeurs = await service.getCoiffeurs(); 
@@ -100,6 +102,18 @@ router.get('/services/:id', async (req, res) => {
     }
     catch (err) {
         console.error('Error retrieving services:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.get('/availability/:id/:day', async (req, res) => {
+    const coiffeurID = req.params.id;
+    const dayOfWeek = req.params.day;
+    try {
+      const avalibility = await service.getAvailability(coiffeurID,dayOfWeek);
+      return res.json(avalibility);
+    } catch (err) {
+        console.error('Error retrieving coiffeur availability:', err);
         return res.status(500).json({ error: 'Internal server error' });
     }
 });

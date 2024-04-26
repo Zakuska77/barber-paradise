@@ -57,6 +57,13 @@ async function getServices(coiffeurID){
     .select('*');
     return services;
 }
+
+async function getAvailability (coiffeurID, dayOfWeek) {
+    const availability = await db('CoiffeurAvailability')
+    .where({ CoiffeurID: coiffeurID, DayOfWeek: dayOfWeek })
+    .select('*');
+return availability;
+}
 module.exports = {
     getCoiffeurs,
     getCoiffeurById,
@@ -66,7 +73,8 @@ module.exports = {
     deleteCoiffeurReviews,
     addService,
     deleteService,
-    getServices
+    getServices,
+    getAvailability
 };
 /* 
 ! /coiffeurs

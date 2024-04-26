@@ -29,6 +29,8 @@ async function getFavorite(clientId) {
     .where('ListFav.ClientID', clientId)
     .select('Coiffeurs.*');
 
+
+
 return favoriteCoiffeurs;
 }
 

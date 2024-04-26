@@ -9,7 +9,10 @@ function AppInfo() {
     const params = useParams()
     useEffect(() => {
 
-        fetch(`${api}/CoiffeurDetails/${params.id}`)
+        fetch(`${api}/coiffeurs/${params.id}`, {
+            method: "GET",
+          
+          })
             .then((res) => res.json())
             .then((data) => setData(data));
 
@@ -17,7 +20,10 @@ function AppInfo() {
 
 
     useEffect(() => {
-        fetch(`${api}/coiffeurAppointments/${params.id}`)
+        fetch(`${api}/coiffeurs/appointments/${params.id}`, {
+            method: "GET",
+          
+          })
             .then((res) => res.json())
             .then((rendevous) => setRendevous(rendevous));
     }, []);

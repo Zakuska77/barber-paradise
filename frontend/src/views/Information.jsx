@@ -17,11 +17,10 @@ function App1() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [userId, setUserId] = useState(null);
-  const [userType, setUserType] = useState(null); // State to store UserType
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch UserId and UserType from browser's storage
       const userIdFromStorage = localStorage.getItem('userId');
       const userTypeFromStorage = localStorage.getItem('userType');
 
@@ -34,23 +33,39 @@ function App1() {
       }
 
       try {
-        const coiffeurDetailsResponse = await fetch(`${api}/CoiffeurDetails/${params.id}`);
+        const coiffeurDetailsResponse = await fetch(`${api}/coiffeurs/${params.id}`, {
+          method: "GET",
+
+        });
         const coiffeurDetailsData = await coiffeurDetailsResponse.json();
         setData(coiffeurDetailsData);
 
         const availabilityData = [];
         for (let i = 1; i <= 7; i++) {
-          const availabilityResponse = await fetch(`${api}/coiffeurAvailability/${params.id}/${i}`);
+
+          const availabilityResponse = await fetch(`${api}/coiffeurs/availability/${params.id}/${i}`, {
+            method: "GET",
+
+          });
           const availabilityDataForDay = await availabilityResponse.json();
           availabilityData.push(availabilityDataForDay);
         }
         setAvailability(availabilityData);
 
-        const commentsResponse = await fetch(`${api}/ReviewCoiffeur/${params.id}`);
+        const commentsResponse = await fetch(`${api}/coiffeurs/reviews/${params.id}`, {
+          method: "GET",
+
+        });
+
+
+        ;
         const commentsData = await commentsResponse.json();
         setComments(commentsData);
 
-        const servicesResponse = await fetch(`${api}/servicesCoiffeur/${params.id}`);
+        const servicesResponse = await fetch(`${api}/coiffeurs/services/${params.id}`, {
+          method: "GET",
+
+        });
         const servicesData = await servicesResponse.json();
         setServices(servicesData);
       } catch (error) {
@@ -96,13 +111,14 @@ function App1() {
     };
 
     try {
-      const response = await fetch(`${api}/AddAppointment/${params.id}`, {
-        method: 'POST',
+      const response = await fetch(`${api}/client/appointments
+`, {
+        Method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
-      });
+        body: JSON.stringify(requestBody),
+      })
 
       if (response.ok) {
         const responseData = await response.json();
@@ -136,13 +152,13 @@ function App1() {
     }
 
     try {
-      const response = await fetch(`${api}/CreateReview`, {
+      const response = await fetch(`${api}/coiffeurs/reviews/${params.id}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ClientID: userId, // Use the stored UserId
+          ClientID: userId,
           CoiffeurID: params.id,
           Rating: rating,
           ReviewText: comment
@@ -155,6 +171,7 @@ function App1() {
         alert('Comment posted successfully');
         setRating(0);
         setComment('');
+        location.reload
       } else {
         const errorData = await response.json();
         console.error(errorData);
@@ -173,14 +190,13 @@ function App1() {
           <InfoCoiffeur
             ShopName={data.ShopName}
             Username={data.Username}
-            Availability={data.Availability}
             Location={data.Location}
             ImageShop={data.ImageShop}
             Email={data.Email}
             PhoneNumber={data.PhoneNumber}
             profilePic={data.profilePic}
           />
-          
+
           <div className="availability">
             {availability.map((dayAvailability, dayIndex) => (
               <div key={dayIndex} className="day-availability">

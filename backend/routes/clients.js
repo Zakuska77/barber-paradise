@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
+const cors = require('cors');
 const appointments = require('../service/appointments');
 const service = require('../service/client_service');
 const auth = require('../middleware/auth');
 
 
 router.use(express.json());
+router.use(cors());
 
 router.get('/', auth.authenticateToken,async (req, res) => {
     try {
@@ -18,7 +19,7 @@ router.get('/', auth.authenticateToken,async (req, res) => {
     }
 });
 
-router.get('/:id',auth.authenticateToken, async (req, res) => {
+router.get('/:id', async (req, res) => {
     clientId = req.params.id;
     try {
         const client = await service.getClientsByID(clientId);
@@ -29,7 +30,7 @@ router.get('/:id',auth.authenticateToken, async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 })
-router.get('/appointments/:id',auth.authenticateToken, async (req, res) => {
+router.get('/appointments/:id', async (req, res) => {
     const clientId = req.params.id;
     try {
         const appointments = await service.getClientsAppointment(clientId);
@@ -52,7 +53,7 @@ router.post('/appointments', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 })
-router.post('/favorites/:clientId/:coiffeurId',auth.authenticateToken, async (req, res) => {
+router.post('/favorites/:clientId/:coiffeurId', async (req, res) => {
     const clientId = req.params.clientId;
     const coiffeurId = req.params.coiffeurId;
     try {
@@ -69,7 +70,7 @@ router.post('/favorites/:clientId/:coiffeurId',auth.authenticateToken, async (re
     }
 });
 
-router.get('/favorites/:id',auth.authenticateToken, async (req, res) => {
+router.get('/favorites/:id', async (req, res) => {
     const clientId = req.params.id;
     try {
         const favorite = await service.getFavorite(clientId);
@@ -80,7 +81,7 @@ router.get('/favorites/:id',auth.authenticateToken, async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 })
-router.delete('/favorites/:clientId/:coiffeurId',auth.authenticateToken, async (req, res) => {
+router.delete('/favorites/:clientId/:coiffeurId', async (req, res) => {
     const clientId = req.params.clientId;
     const coiffeurId = req.params.coiffeurId;
     try {
