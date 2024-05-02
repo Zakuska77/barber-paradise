@@ -11,7 +11,8 @@ async function checkAvailability(coiffeurId, appointmentDate) {
     return availability;
 }
 
-async function addAppointment(coiffeurId, ClientID, ServiceID, Year, Month, Day, AppointmentTime) {
+// !! need some testing
+async function addAppointment(ClientID, coiffeurId , ServiceID, Year, Month, Day, AppointmentTime) {
     try {
         
         const appointmentDate = new Date(`${Year}-${Month}-${Day}`);

@@ -111,9 +111,13 @@ function App1() {
     };
 
     try {
-      const response = await fetch(`${api}/client/appointments
+      const userId = localStorage.getItem('userId');
+
+      const response = await fetch(`${api}/clients/appointments
+
 `, {
-        Method: 'POST',
+        method: 'POST',
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },
@@ -125,8 +129,6 @@ function App1() {
         console.log(responseData);
         alert('Appointment added successfully');
       } else {
-        const errorData = await response.json();
-        console.error(errorData);
         alert('Failed to add appointment');
       }
     } catch (error) {
