@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CoiffeurCarte = ({ ImageShop, ShopName, Location, Availability, Username }) => {
+const CoiffeurCarte = ({ ImageShop, ShopName, Location, Email, Username }) => {
     return (
         <>
 
@@ -26,7 +26,7 @@ const CoiffeurCarte = ({ ImageShop, ShopName, Location, Availability, Username }
                 <div className="content">
                     <p className="subtitle is-4">Nom Coiffeur : {Username}</p>
                     <p className="subtitle is-6">Adress : {Location}</p>
-                    <p className="subtitle is-6">Disponibiliter : {Availability}
+                    <p className="subtitle is-6">Gmail : {Email}
 
                     </p>
                 </div>

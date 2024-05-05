@@ -8,7 +8,7 @@ function Account() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/userDetails/${userType}/${id}`);
+        const response = await fetch(`/${userType}/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch user details');
         }

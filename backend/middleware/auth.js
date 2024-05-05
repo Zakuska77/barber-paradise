@@ -1,8 +1,3 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // For password hashing
-
-const secretKey = 'your-secret-key'
-
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -17,4 +12,4 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
-module.exports =  {authenticateToken}
+module.exports = {authenticateToken}

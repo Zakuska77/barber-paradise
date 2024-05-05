@@ -15,6 +15,7 @@ function ModifyCoiffeurAvailability() {
         { DayOfWeek: 7, StartTime: "", EndTime: "" }
     ]);
 
+    
     useEffect(() => {
         // Retrieve coiffeur ID from local storage when component mounts
         const storedUserId = localStorage.getItem("userId");
@@ -39,8 +40,8 @@ function ModifyCoiffeurAvailability() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`${api}/ModifyCoiffeurAvailability`, {
-                method: "POST",
+            const response = await fetch(`${api}/coiffeurs/availability`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },

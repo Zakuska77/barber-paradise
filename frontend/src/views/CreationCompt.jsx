@@ -24,11 +24,11 @@ function CreationCompteClient() {
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const response = await fetch(`${api}/CreateClientAccount`, {
+            const response = await fetch(`${api}/register/client`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
-                },
+                    "Content-Type": "application/json",
+                  },
                 body: JSON.stringify(formData)
             });
             if (response.ok) {
