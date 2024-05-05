@@ -26,11 +26,11 @@ function CreationCompteCoiffeur() {
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const response = await fetch(`${api}/CreateCoiffeurAccount`, {
+            const response = await fetch(`${api}/register/coiffeur`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
-                },
+                    "Content-Type": "application/json",
+                  },
                 body: JSON.stringify(formData)
             });
             if (response.ok) {

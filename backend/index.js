@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const coiffeurs = require('./routes/coiffeurs');
+const coiffeurs = require('./routes/coiffeur');
 const clients = require('./routes/clients');
 const login = require('./routes/login');
 const register = require('./routes/register');

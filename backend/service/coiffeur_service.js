@@ -17,6 +17,7 @@ async function getCoiffeursAppointments(coiffeurId) {
 // Coiffeurs + review
 async function getCoiffeurReviews(coiffeurId) {
     const reviews = await db('CoiffeurReviews')
+        .join('Clients', 'Clients.ClientID', '=', 'CoiffeurReviews.ClientID')
         .select('*')
         .where('CoiffeurID', coiffeurId);
     return reviews
@@ -36,9 +37,9 @@ async function deleteCoiffeurReviews(reviewId) {
     }
     await db('CoiffeurReviews').where('ReviewID', reviewId).del();
 }
-async function addService(coiffeurId, ServiceName, Description, Price) {
+async function addService(CoiffeurID, ServiceName, Description, Price) {
     await db('CoiffeurServices').insert({
-        CoiffeurID: coiffeurId,
+        CoiffeurID,
         ServiceName,
         Description,
         Price
@@ -57,6 +58,25 @@ async function getServices(coiffeurID){
     .select('*');
     return services;
 }
+
+async function getAvailability (coiffeurID, dayOfWeek) {
+    const availability = await db('CoiffeurAvailability')
+    .where({ CoiffeurID: coiffeurID, DayOfWeek: dayOfWeek })
+    .select('*');
+return availability;
+}
+async function updateAvailability (CoiffeurID, availability) {
+    await db('CoiffeurAvailability').insert({
+        CoiffeurID,
+        DayOfWeek: availability.DayOfWeek,
+        StartTime: availability.StartTime,
+        EndTime: availability.EndTime
+    });
+}
+async function getSchedule(CoiffeurID) {
+  const schedule = await db('CoiffeurAvailability').where({ CoiffeurID}).select('*')
+  return schedule;
+}
 module.exports = {
     getCoiffeurs,
     getCoiffeurById,
@@ -66,7 +86,10 @@ module.exports = {
     deleteCoiffeurReviews,
     addService,
     deleteService,
-    getServices
+    getServices,
+    getAvailability,
+    updateAvailability,
+    getSchedule
 };
 /* 
 ! /coiffeurs

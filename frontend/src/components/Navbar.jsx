@@ -44,9 +44,12 @@ export default function Menu() {
             </Link>
           )}
         {userType === "coiffeur" && (
-          <Link to="/ModifyCoiffeurAvailability" className="navbar-item has-text-black">
-            Modify Schedule
-          </Link>
+          <>
+            <Link to="/ModifyCoiffeurAvailability" className="navbar-item has-text-black">
+              Modify Schedule
+            </Link>
+            <Link to={`/services/${userId}`} className="navbar-item has-text-black">My services</Link>
+          </>
         )}
       </div>
       <div className="navbar-end p-2">

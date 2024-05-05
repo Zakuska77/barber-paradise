@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 const db = require('../configs/db');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // For password hashing
+const bcrypt = require('bcrypt');
+const cors = require('cors');
+ // For password hashing
 
 const secretKey = 'your-secret-key';
 
 router.use(express.json());
+router.use(cors());
+
 router.post('/', async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body)
@@ -42,5 +46,6 @@ router.post('/', async (req, res) => {
         console.error('Login error:', err);
         return res.status(500).json({ error: 'Internal server error' });
     }
+    return res.json(req.body);
 });
 module.exports = router;

@@ -3,19 +3,29 @@ import { api } from "../api/api";
 import CoiffeurCarte from "../components/CoiffeurCarte";
 import { useNavigate } from "react-router-dom";
 
+
 function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [inputData, setInputData] = useState("");
 
-  useEffect(() => {
-    fetch(`${api}/Coiffeurs`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setFilteredData(data);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${api}/coiffeurs`, {
+        method: "GET",
+      
       });
+      const data = await response.json();
+      setData(data);
+      setFilteredData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   function handleClick(id) {
@@ -65,7 +75,7 @@ function App() {
           <CoiffeurCarte
             ShopName={item.ShopName}
             Username={item.Username} // Corrected prop name
-            Availability={item.Availability} // Added prop
+            Email={item.Email} // Added prop
             Location={item.Location}
             ImageShop={item.ImageShop}
           />
