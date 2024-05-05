@@ -17,7 +17,7 @@ async function getClientsAppointment(clientId) {
     return clientAppointments;
 }
 async function addFavorite(clientId, coiffeurId) {
-    await db('ListFav').insert({ ClientID: clientId, CoiffeurID: coiffeurId });
+    await db('ListFav').insert({ ClientID: clientId, CoiffeurID: coiffeurId,});
 }
 
 async function deleteFavorite(clientId, coiffeurId) {

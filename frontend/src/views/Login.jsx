@@ -5,7 +5,7 @@ import { api } from "../api/api"; // Assuming you have defined the base URL in a
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const navigate = useNavigate();
 
   function toRegisterClient() {
@@ -15,36 +15,32 @@ function Login() {
   function toRegisterCoiffeur() {
     navigate("/CreationCompteCoiffeur");
   }
-console.log(email, password)
+  console.log(email, password)
   async function login() {
     try {
-      const response = await fetch(`${api}/login/`, { // Using dynamic URL
+      const response = await fetch(`${api}/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password })
       });
-      console.log()
 
       const userData = await response.json();
-      console.log(userData.password)
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        throw new Error(userData.message);
       }
 
       localStorage.setItem("token", userData.token);
       localStorage.setItem("userType", userData.userType);
       localStorage.setItem("userId", userData.userId);
-      
-   
+
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
-
     }
   }
+
 
 
   return (

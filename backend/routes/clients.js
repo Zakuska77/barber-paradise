@@ -9,7 +9,7 @@ const auth = require('../middleware/auth');
 router.use(express.json());
 router.use(cors());
 
-router.get('/', auth.authenticateToken,async (req, res) => {
+router.get('/', auth.authenticateToken, async (req, res) => {
     try {
         const clients = await service.getClients();
         return res.json(clients);
@@ -42,10 +42,10 @@ router.get('/appointments/:id', async (req, res) => {
     }
 })
 router.post('/appointments', async (req, res) => {
-    const {coiffeurId, ClientID, ServiceID, Year, Month, Day, AppointmentTime} = req.body;
+    const { ClientID, CoiffeurID, ServiceID, Year, Month, Day, AppointmentTime } = req.body;
     console.log(req.body);
     try {
-        const appointment = await appointments.addAppointment(coiffeurId, ClientID, ServiceID, Year, Month, Day, AppointmentTime);
+        const appointment = await appointments.addAppointment( ClientID, CoiffeurID, ServiceID, Year, Month, Day, AppointmentTime );
         return res.json(appointment);
     }
     catch (err) {
