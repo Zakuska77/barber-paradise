@@ -10,6 +10,7 @@ import { Rating } from 'react-simple-star-rating'
 
 function App1() {
   const [data, setData] = useState({});
+  const [wallet, setWallet] = useState();
   const [availability, setAvailability] = useState([]);
   const [comments, setComments] = useState([]);
   const [services, setServices] = useState([]);
@@ -22,7 +23,16 @@ function App1() {
   const [userId, setUserId] = useState(null);
   const [userType, setUserType] = useState(null);
 
+
   useEffect(() => {
+    fetch(`${api}/clients/${params.id}`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setWallet(data[0].balance)
+      });
+
     const fetchData = async () => {
       const userIdFromStorage = localStorage.getItem('userId');
       const userTypeFromStorage = localStorage.getItem('userType');
@@ -119,9 +129,7 @@ function App1() {
     try {
       const userId = localStorage.getItem('userId');
 
-      const response = await fetch(`${api}/clients/appointments
-
-`, {
+      const response = await fetch(`${api}/clients/appointments`, {
         method: 'POST',
         //mode: 'no-cors',
         headers: {
@@ -135,14 +143,14 @@ function App1() {
           Month: month,
           Day: day,
           AppointmentTime: parseInt(selectedHour),
-          IsAvailable: 0
+          IsAvailable: 1
         }),
       })
-      // console.log(JSON.stringify(requestBody))
+       console.log(JSON.stringify(requestBody))
 
       if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
+        const finalAmount = +wallet + selectedService.price
+        IPutCoinsIntoMyPiggyBank(finalAmount)
         alert('Appointment added successfully');
       } else {
         alert('Failed to add appointment');
@@ -151,11 +159,22 @@ function App1() {
       console.error('Error adding appointment:', error);
       alert('Failed to add appointment');
     }
+
   };
   const handleRating = (rate) => {
     setRating(rate)
   }
-
+  function IPutCoinsIntoMyPiggyBank(amount) {       
+    fetch(`${api}/clients/piggybank/${userId}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            balance: amount
+        })
+    })
+}
   const handlePostComment = async () => {
     if (!userId) {
       alert('User not logged in');
@@ -203,7 +222,8 @@ function App1() {
       alert('Failed to post comment');
     }
   };
-  
+
+  console.log(selectedService)
   return (
     <>
       <div className="m-4">
@@ -238,7 +258,7 @@ function App1() {
                 <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
                   <option value="">Select a Service</option>
                   {services.map(service => (
-                    <option key={service.ServiceID} value={service.ServiceID}>{service.ServiceName}</option>
+                    <option key={service.ServiceID} value={service.ServiceID}>{service.ServiceName} - {service.Description} - {service.Price}$</option>
                   ))}
                 </select>
               </div>
