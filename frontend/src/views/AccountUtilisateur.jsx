@@ -7,22 +7,36 @@ function Account() {
     const [data, setData] = useState([]);
     const [favoris, setFavori] = useState([]);
     const [rendevous, setRendevous] = useState([]);
+    const [oldRdv, setOldRdv] = useState([]);
     const params = useParams()
 
     useEffect(() => {
-        fetch(`${api}/clientDetails/${params.id}`)
+        fetch(`${api}/clients/${params.id}`, {
+            method: "GET",
+        })
             .then((res) => res.json())
             .then((data) => setData(data));
-
-        fetch(`${api}/favoriteCoiffeurs/${params.id}`)
+    
+        fetch(`${api}/clients/favorites/${params.id}`, {
+            method: "GET",
+        })
             .then((res) => res.json())
             .then((favoris) => setFavori(favoris));
-
-        fetch(`${api}/clientAppointments/${params.id}`)
+    
+        fetch(`${api}/clients/appointments/${params.id}`, {
+            method: "GET",
+        })
             .then((res) => res.json())
-            .then((rendevous) => setRendevous(rendevous));
+            .then((rendevous) => {
+                setRendevous(rendevous);
+                const oldAppointments = rendevous.filter(rendevou => rendevou.Month <= 4 && rendevou.Day <= 5);
+                setOldRdv(oldAppointments);
+                console.log(oldAppointments);
+            });
     }, []);
-    console.log(rendevous);
+    
+    // todo use current date
+    console.log(oldRdv);
     return (
         <div className="mx-6 my-4">
             <div className="media">
@@ -65,17 +79,39 @@ function Account() {
                         <tr>
                             <th>Coiffeur</th>
                             <th>Date</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
-                       {rendevous.map((item) =>(
-                        <tr key={item.AppointmentID}>
-                            <td>{item.CoiffeurID}</td>
-                            <td>{toString(item.AppointmentDateTime)}</td>
-                        </tr>
+                        {rendevous.map((item) => (
+                            <tr key={item.AppointmentID}>
+                                <td>{item.CoiffeurID}</td>
+                                <td>{item.Day}/{item.Month}/{item.Year} What time :{(item.AppointmentTime)} h</td>
+                            </tr>
 
-                       ))}
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <h2 className="title is-2">Old Rendez-vous</h2>
+            <hr />
+            <div>
+                <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Coiffeur</th>
+                            <th>Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {oldRdv.map((item) => (
+                            <tr key={item.AppointmentID}>
+                                <td>{item.CoiffeurID}</td>
+                                <td>{item.Day}/{item.Month}/{item.Year} What time :{(item.AppointmentTime)} h</td>
+                            </tr>
+
+                        ))}
                     </tbody>
                 </table>
             </div>
