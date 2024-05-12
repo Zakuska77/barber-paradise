@@ -231,6 +231,7 @@ function App1() {
             ))}
           </div>
         </div>
+  
         <div className="box mt-4 mb-8 p-2">
           <div className="columns">
             <div className="column is-half">
@@ -266,7 +267,6 @@ function App1() {
           <div className="comment">
             <h1 className="title mt-2 mb-2">Comments</h1>
             <div className="field is-horizontal">
-
               <div className="field-body">
                 <div className="field">
                   <div className="control pr-6 pl-1">
@@ -275,6 +275,9 @@ function App1() {
                 </div>
               </div>
             </div>
+            <button className="button is-primary ml-4 mt-2 mb-4 " onClick={handlePostComment}>Post Comment</button>
+            <label htmlFor="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="0" max="5" step="1" value={rating} onChange={e => setRating(e.target.value)} />
           </div>
           <div className="rating ml-5 my-2">
             <Rating
@@ -316,7 +319,7 @@ function App1() {
   );
 }
 
-// Function to get day name based on index
+
 function getDayName(dayIndex) {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return dayNames[dayIndex];
