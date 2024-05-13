@@ -86,10 +86,22 @@ router.delete('/favorites/:clientId/:coiffeurId', async (req, res) => {
     const coiffeurId = req.params.coiffeurId;
     try {
         const favorite = await service.deleteFavorite(clientId, coiffeurId);
-        return res.json(favorite);
+        const response = await service.getFavorite(clientId)
+        return res.json(response);
     }
     catch (err) {
         console.error('Error retrieving clients:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+})
+router.put('/piggybank/:clientId', async (req, res) => {
+    const clientId = req.params.clientId;
+    const { balance} =  req.body;
+    try {
+        await service.ajouterArgents(clientId, balance);
+        return res.status(200).json({ message: 'Piggy bank updated successfully' });
+    }catch (err) {
+        console.error('Error updating piggy bank:', err);
         return res.status(500).json({ error: 'Internal server error' });
     }
 })
