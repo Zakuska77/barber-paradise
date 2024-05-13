@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-const Favoris = ({ Username, ShopName, Location,profilePic }) => {
+const Favoris = ({ Username, ShopName, Location, profilePic, handleDelete }) => {
     return (
         <div className="card">
             <div className="card-image">
@@ -13,11 +13,16 @@ const Favoris = ({ Username, ShopName, Location,profilePic }) => {
             </div>
             <div className="card-content">
                 <p className="title is-4">{Username}</p>
-                <p className="subtitle is-6">{ShopName}</p>
-                <p className="is-size-7	">{Location}</p>
+                <p className="subtitle is-6"><strong>{ShopName}</strong> - {Location} </p>
+                <button className="button is-danger" onClick={() => handleDelete()}>
+                    <span className="icon is-small">
+                        <i className="fa-solid fa-trash"></i>
+                    </span>
+                    <p>Supprimer</p>
+                </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Favoris
+export default Favoris;
