@@ -27,11 +27,14 @@ async function getFavorite(clientId) {
     const favoriteCoiffeurs = await db('ListFav')
     .join('Coiffeurs', 'ListFav.CoiffeurID', '=', 'Coiffeurs.CoiffeurID')
     .where('ListFav.ClientID', clientId)
-    .select('Coiffeurs.*');
+    .select('*');
 
 
 
 return favoriteCoiffeurs;
+}
+async function ajouterArgents(clientId, amount){
+    await db('Clients').where('ClientID', clientId).update({balance: amount});
 }
 
 module.exports = {
@@ -40,7 +43,8 @@ module.exports = {
     getClientsAppointment,
     addFavorite,
     deleteFavorite,
-    getFavorite }
+    getFavorite,
+    ajouterArgents }
 //  clients
 //  clients/:id
 //  clients/appointments
