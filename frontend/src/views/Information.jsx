@@ -117,7 +117,7 @@ function App1() {
     const day = selectedDate.getDate();
 
     const requestBody = {
-      ClientID: userId, // Use the stored UserId
+      ClientID: userId, 
       CoiffeurID: params.id,
       ServiceID: selectedService,
       Year: year,
@@ -146,10 +146,13 @@ function App1() {
           IsAvailable: 1
         }),
       })
-       console.log(JSON.stringify(requestBody))
+      //  console.log(JSON.stringify(requestBody))
 
       if (response.ok) {
-        const finalAmount = +wallet + selectedService.price
+        const servicePrice = services.filter((item)  => item.ServiceID == selectedService ) // 
+        const finalPrice = servicePrice[0].Price
+        const finalAmount = wallet - finalPrice
+        console.log(finalAmount)
         IPutCoinsIntoMyPiggyBank(finalAmount)
         alert('Appointment added successfully');
       } else {
@@ -223,7 +226,9 @@ function App1() {
     }
   };
 
-  console.log(selectedService)
+  console.log(wallet)
+  console.log(services)
+  // console.log(selectedService.price)
   return (
     <>
       <div className="m-4">
@@ -238,19 +243,9 @@ function App1() {
             profilePic={data.profilePic}
           />
 
-          <div className="availability">
-            {availability.map((dayAvailability, dayIndex) => (
-              <div key={dayIndex} className="day-availability">
-                <h2>{getDayName(dayIndex)}</h2>
-                <ul>
-                  {dayAvailability.map((slot, index) => (
-                    <li key={`${dayIndex}-${index}`}>{`${slot.StartTime}-${slot.EndTime}`}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
           </div>
-        </div>
+
+          <div className="availability">
         <div className="box mt-4 mb-8 p-2">
           <div className="columns">
             <div className="column is-half">
@@ -280,6 +275,18 @@ function App1() {
             </div>
           </div>
           <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserver</button>
+        </div>
+            {availability.map((dayAvailability, dayIndex) => (
+              <div key={dayIndex} className="day-availability">
+                <h2>{getDayName(dayIndex)}</h2>
+                <ul>
+                  {dayAvailability.map((slot, index) => (
+                    <li key={`${dayIndex}-${index}`}>{`${slot.StartTime}-${slot.EndTime}`}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="box mt-4 mb-8 p-2">
@@ -331,7 +338,6 @@ function App1() {
         </div>
         <br />
         <br />
-      </div>
     </>
   );
 }
