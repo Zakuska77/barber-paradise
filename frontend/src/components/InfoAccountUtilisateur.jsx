@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InfoAccountUtilisateur = ({ Username, Email, Password, PhoneNumber }) => {
+const InfoAccountUtilisateur = ({ Email, Password, PhoneNumber }) => {
     return (
         <>
             <div className="card">

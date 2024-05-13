@@ -14,6 +14,7 @@ import {
   import AccountUtilisateur from "../views/AccountUtilisateur.jsx";
   import AccountCoiffeur from "../views/AccountCoiffeur.jsx"
   import Services from "../views/Services.jsx";
+  import PiggyBank from "../views/PiggyBank.jsx";
   
 
   import Home from "../views/Home.jsx";
@@ -36,7 +37,8 @@ import {
         { path: "/ModifyCoiffeurAvailability", element: <ModifyCoiffeurAvailability/> },
         { path: "/AccountUtilisateur/:id", element: <AccountUtilisateur/> },
         { path: "/AccountCoiffeur/:id", element: <AccountCoiffeur/> },
-        { path: "/services/:id", element: <Services />}
+        { path: "/services/:id", element: <Services />},
+        { path: "/piggy-bank/:id", element: <PiggyBank/> },
         
       ]},
   ]);
