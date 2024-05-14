@@ -164,6 +164,40 @@ function App1() {
     }
 
   };
+
+  const handleFav = async () => {
+    if (!userId) {
+      alert('User not logged in');
+      return;
+    }
+  
+    if (userType !== 'client') {
+      alert('You must be a client to make a reservation');
+      return;
+    }
+  
+    try {
+      const clientId = localStorage.getItem('userId');
+      const coiffeurId = params.id;
+  
+      const response = await fetch(`${api}/clients/addFavorite/${clientId}/${coiffeurId}`, {
+        method: 'POST',
+      });
+  
+      if (response.ok) {
+        alert('Coiffeur added successfully');
+      } else {
+        console.error('Failed to add coiffeur:', response.statusText);
+        alert('Failed to add coiffeur');
+      }
+    } catch (error) {
+      console.error('Error adding coiffeur:', error);
+      alert('Failed to add coiffeur');
+    }
+  };
+
+
+
   const handleRating = (rate) => {
     setRating(rate)
   }
@@ -275,6 +309,7 @@ function App1() {
             </div>
           </div>
           <button className="button is-success is-dark" onClick={handleAddAppointment}>Reserver</button>
+          <button className="button is-success is-dark" onClick={handleFav}>Add as Favourite</button>
         </div>
             {availability.map((dayAvailability, dayIndex) => (
               <div key={dayIndex} className="day-availability">

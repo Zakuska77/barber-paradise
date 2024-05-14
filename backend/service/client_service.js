@@ -16,6 +16,11 @@ async function getClientsAppointment(clientId) {
     .where('ClientID', clientId);
     return clientAppointments;
 }
+
+async function deleteAppointment(appointmentId) {
+    await db('Appointment').where({ AppointmentID: appointmentId}).del();
+}
+
 async function addFavorite(clientId, coiffeurId) {
     await db('ListFav').insert({ ClientID: clientId, CoiffeurID: coiffeurId,});
 }
@@ -44,7 +49,8 @@ module.exports = {
     addFavorite,
     deleteFavorite,
     getFavorite,
-    ajouterArgents }
+    ajouterArgents,
+    deleteAppointment }
 //  clients
 //  clients/:id
 //  clients/appointments
