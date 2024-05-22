@@ -62,6 +62,27 @@ function Account() {
     }
     console.log
     console.log(rendevous)
+
+
+    async function deleteAppointment(appointmentId) {
+        await fetch(`${api}/clients/DeleteAppointment/${appointmentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const updatedAppointments = await fetch(`${api}/clients/appointments/${params.id}`, {
+            method: "GET",
+        }).then((res) => res.json());
+
+        setRendevous(updatedAppointments);
+
+        const updatedFilteredRdv = filteredRdv.filter(item => item.AppointmentID !== appointmentId);
+        setfilteredRdv(updatedFilteredRdv);
+    }
+
+
     async function oldRendezVous() {
         const filteredRendevous = rendevous.filter(rendevou => {
             return rendevou.Month < month || (rendevou.Month === month && rendevou.Day < day);
@@ -161,6 +182,24 @@ function Account() {
                             <tr key={item.AppointmentID}>
                                 <td>{item.CoiffeurID}</td>
                                 <td>{item.Day}/{item.Month}/{item.Year} What time :{(item.AppointmentTime)} h</td>
+                                <td>
+                                    {!pressed && (
+                                        <button
+                                            style={{
+                                                backgroundColor: '#e74c3c',
+                                                color: '#fff',
+                                                border: 'none',
+                                                padding: '5px 5px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                            }}
+                                            onClick={() => deleteAppointment(item.AppointmentID)}
+                                        >
+                                            Cancel Reservation
+                                        </button>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
