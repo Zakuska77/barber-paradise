@@ -4,6 +4,7 @@ const cors = require('cors');
 const appointments = require('../service/appointments');
 const service = require('../service/client_service');
 const auth = require('../middleware/auth');
+const db = require('../configs/db');
 
 
 router.use(express.json());
@@ -70,6 +71,31 @@ router.post('/favorites/:clientId/:coiffeurId', async (req, res) => {
     }
 });
 
+router.post('/addFavorite/:clientId/:coiffeurId', async (req, res) => {
+    try {
+        const clientId = req.params.clientId;
+        const coiffeurId = req.params.coiffeurId;
+
+        const existingFavorite = await db('ListFav')
+            .where({
+                ClientID: clientId,
+                CoiffeurID: coiffeurId
+            })
+            .first();
+
+        if (existingFavorite) {
+            return res.status(400).json({ message: 'Coiffeur already added as favorite' });
+        }
+
+        await db('ListFav').insert({ ClientID: clientId, CoiffeurID: coiffeurId });
+
+        return res.status(201).json({ message: 'Coiffeur added as favorite successfully' });
+    } catch (err) {
+        console.error('Error adding favorite coiffeur:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.get('/favorites/:id', async (req, res) => {
     const clientId = req.params.id;
     try {
@@ -94,6 +120,19 @@ router.delete('/favorites/:clientId/:coiffeurId', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 })
+
+router.delete('/DeleteAppointment/:appointmentId', async (req, res) => {
+    const appointmentId = req.params.appointmentId;
+    try {
+        const deleteAppointment = await service.deleteAppointment(appointmentId);
+
+        return res.status(200).json({ message: 'Appointment deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting appointment:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.put('/piggybank/:clientId', async (req, res) => {
     const clientId = req.params.clientId;
     const { balance} =  req.body;
